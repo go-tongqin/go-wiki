@@ -20,10 +20,10 @@
 // 如果需要达到其中一个失败就全部失败的情况，需要使用errgroup.WithContext()方法
 eg := errgroup.Group{}
 eg.Go(func() error {
-		// your handler code
+  // your handler code
 })
 eg.Go(func() error {
-		// your handler code
+  // your handler code
 })
 
 err = eg.Wait()
