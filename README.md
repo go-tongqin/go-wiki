@@ -13,6 +13,42 @@
 - 日志检索工具
 
 ## 好用的包
-### errgroup
+### golang.org/x/sync/errgroup
+- 捕获多个goroutine中的第一个出现的错误
+#### 示例
+```
+// 如果需要达到其中一个失败就全部失败的情况，需要使用errgroup.WithContext()方法
+eg := errgroup.Group{}
+eg.Go(func() error {
+		// your handler code
+})
+eg.Go(func() error {
+		// your handler code
+})
 
+err = eg.Wait()
+if err != nil {
+	log.Errorf("failed, err: %v", err)
+}
+```
+### [github.com/pkg/errors](https://github.com/pkg/errors)
+- 他可以帮助你包装原始错误，并且携带堆栈信息以及附加其他的调试信息，不建议在包里面使用，而是在业务层使用更合适，
 
+#### 示例
+```
+// service A
+return err
+
+// service B
+err := A()
+if nil != err {
+  // WithStack, Wrap方法会附加堆栈信息，整个调用栈中应该只使用一次
+  return errors.WithStack(err)
+}
+
+// service C
+err := B()
+if nil != err {
+  return errors.WithMessage(err, "error message");
+}
+```
